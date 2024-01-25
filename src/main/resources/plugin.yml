@@ -3,5 +3,9 @@ version: '${version}'
 main: io.github.pheontern.hidenearbyplugin.HideNearbyPlugin
 api-version: '1.20'
 authors: [Pheontern]
-description: Hide nearby players to prevent them from being in your face.
+description: Hide nearby players to prevent them from blocking your view.
 website: io.github.Pheontern
+commands:
+  toggleHide:
+    description: Hides nearby players.
+    usage: /<command>
