@@ -13,6 +13,11 @@ import java.util.logging.Logger;
 
 public final class HideNearbyPlugin extends JavaPlugin{
 
+    public static HideNearbyPlugin plugin;
+    public HideNearbyPlugin(){
+        plugin = this;
+    }
+
     //List with all players that have hide activated.
     public List<Player> playersWithHide = new ArrayList<>();
 
@@ -23,14 +28,14 @@ public final class HideNearbyPlugin extends JavaPlugin{
         // Plugin startup logic
 
         Logger logger = this.getLogger();
-        logger.info("HideNearbyPlugin has initialized and works.");
-
-        getServer().getPluginManager().registerEvents(new OnPlayerJoinOrLeave(this), this);
-
-        getCommand("toggleHide").setExecutor(new ToggleHideNearby(this));
-
         BukkitScheduler scheduler = this.getServer().getScheduler();
-        scheduler.runTaskTimer(this, new HidesPlayers(this), 20, 5);
+
+        getServer().getPluginManager().registerEvents(new OnPlayerJoinOrLeave(), this);
+        getCommand("toggleHide").setExecutor(new ToggleHideNearby());
+
+        scheduler.runTaskTimer(this, new HidesPlayers(), 20, 5);
+
+        logger.info("HideNearbyPlugin has initialized and works.");
     }
 
 

@@ -3,42 +3,43 @@ package io.github.pheontern.hidenearbyplugin;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class HidesPlayers implements Runnable {
-    private final HideNearbyPlugin plugin;
-    public HidesPlayers(HideNearbyPlugin plugin) {
-        this.plugin = plugin;
-    }
+    private final HideNearbyPlugin plugin = HideNearbyPlugin.plugin;
 
     //Loops through players with hide activated as well as all online players to hide and show players correctly.
     @Override
     public void run() {
-        Collection<? extends Player> onlinePlayers = this.plugin.getServer().getOnlinePlayers();
-
-        List<Player> playersWithHide = this.plugin.playersWithHide;
+        List<Player> onlinePlayers = new ArrayList<>(this.plugin.getServer().getOnlinePlayers());
+        List<Player> playersWithHide = new ArrayList<>(this.plugin.playersWithHide);
 
         for (Player player : playersWithHide){
 
-            List<Entity> nearbyEntities = player.getNearbyEntities(2.5,2.5,2.5);
+            List<Player> distantPlayers = new ArrayList<>(onlinePlayers);
+            List<Entity> nearbyEntities = new ArrayList<>(player.getNearbyEntities(2.5, 2.5, 2.5));
 
-            for (Entity nearbyEntity : nearbyEntities){
+            for (Entity nearbyEntity : nearbyEntities) {
 
-                if (nearbyEntity instanceof Player nearbyPlayer && player.canSee(nearbyPlayer)){
+                if (nearbyEntity instanceof Player nearbyPlayer) {
 
-                    player.hidePlayer(this.plugin, nearbyPlayer);
+                    if (player.canSee(nearbyPlayer)) {
+                        player.hidePlayer(this.plugin, nearbyPlayer);
+                    }
+                    distantPlayers.remove(nearbyPlayer);
                 }
             }
-
-
-            for (Player visiblePlayer : onlinePlayers){
-                if (visiblePlayer != player && !player.canSee(visiblePlayer) && !nearbyEntities.contains(visiblePlayer)){
-                    player.showPlayer(this.plugin, visiblePlayer);
-                }
-            }
-
-
+            showInvisible(distantPlayers, player);
         }
     }
+
+    public static void showInvisible(List<Player> playersToShow, Player player){
+        for (Player playerToShow : playersToShow){
+            if (!player.canSee(playerToShow)) {
+                player.showPlayer(HideNearbyPlugin.plugin, playerToShow);
+            }
+        }
+    }
+
 }
