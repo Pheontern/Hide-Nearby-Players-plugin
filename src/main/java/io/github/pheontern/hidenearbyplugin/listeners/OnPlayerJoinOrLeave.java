@@ -12,7 +12,7 @@ import java.util.ArrayList;
 //Listener with methods for players joining and leaving.
 public class OnPlayerJoinOrLeave implements Listener {
 
-    private final HideNearbyPlugin plugin = HideNearbyPlugin.plugin;
+    private final HideNearbyPlugin plugin = HideNearbyPlugin.getPlugin();
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {

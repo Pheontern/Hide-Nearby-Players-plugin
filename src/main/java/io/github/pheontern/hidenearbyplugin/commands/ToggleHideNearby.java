@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class ToggleHideNearby implements CommandExecutor {
 
-    private final HideNearbyPlugin plugin = HideNearbyPlugin.plugin;
+    private final HideNearbyPlugin plugin = HideNearbyPlugin.getPlugin();
 
     //Enables or disables hide for player that executes this command. Confirmation message is sent in chat.
     @Override
@@ -26,7 +26,7 @@ public class ToggleHideNearby implements CommandExecutor {
 
             if (playerIndex == -1) {
                 this.plugin.playersWithHide.add(player);
-                player.sendMessage(Component.text("Players closer than 2.5 blocks are now hidden.").color(TextColor.fromHexString("#78f562")));
+                player.sendMessage(Component.text("Players closer than " + this.plugin.hideDistance + " blocks are now hidden.").color(TextColor.fromHexString("#78f562")));
             }
             else {
                 this.plugin.playersWithHide.remove(playerIndex);

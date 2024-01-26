@@ -1,5 +1,6 @@
 package io.github.pheontern.hidenearbyplugin;
 
+import io.github.pheontern.hidenearbyplugin.commands.ChangeHideDistance;
 import io.github.pheontern.hidenearbyplugin.commands.ToggleHideNearby;
 import io.github.pheontern.hidenearbyplugin.listeners.OnPlayerJoinOrLeave;
 import org.bukkit.entity.Player;
@@ -13,10 +14,9 @@ import java.util.logging.Logger;
 
 public final class HideNearbyPlugin extends JavaPlugin{
 
-    public static HideNearbyPlugin plugin;
-    public HideNearbyPlugin(){
-        plugin = this;
-    }
+    private static HideNearbyPlugin plugin;
+    public double hideDistance = 2.5;
+
 
     //List with all players that have hide activated.
     public List<Player> playersWithHide = new ArrayList<>();
@@ -26,14 +26,17 @@ public final class HideNearbyPlugin extends JavaPlugin{
     @Override
     public void onEnable() {
         // Plugin startup logic
+        plugin = this;
 
         Logger logger = this.getLogger();
         BukkitScheduler scheduler = this.getServer().getScheduler();
 
         getServer().getPluginManager().registerEvents(new OnPlayerJoinOrLeave(), this);
-        getCommand("toggleHide").setExecutor(new ToggleHideNearby());
 
-        scheduler.runTaskTimer(this, new HidesPlayers(), 20, 5);
+        getCommand("toggleHide").setExecutor(new ToggleHideNearby());
+        getCommand("hideDistance").setExecutor(new ChangeHideDistance());
+
+        scheduler.runTaskTimer(this, new HidesPlayers(), 20, 3);
 
         logger.info("HideNearbyPlugin has initialized and works.");
     }
@@ -42,6 +45,11 @@ public final class HideNearbyPlugin extends JavaPlugin{
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+
+    public static HideNearbyPlugin getPlugin(){
+        return plugin;
     }
 
 }

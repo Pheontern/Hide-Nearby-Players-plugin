@@ -9,3 +9,6 @@ commands:
   toggleHide:
     description: Hides nearby players.
     usage: /<command>
+  hideDistance:
+    description: If player is op, changes the distance below which players are hidden.
+    usage: /<command> decimalValue

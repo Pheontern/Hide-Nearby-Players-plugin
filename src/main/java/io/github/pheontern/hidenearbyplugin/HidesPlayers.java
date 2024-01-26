@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class HidesPlayers implements Runnable {
-    private final HideNearbyPlugin plugin = HideNearbyPlugin.plugin;
+    private final HideNearbyPlugin plugin = HideNearbyPlugin.getPlugin();
 
     //Loops through players with hide activated as well as all online players to hide and show players correctly.
     @Override
@@ -18,7 +18,7 @@ public final class HidesPlayers implements Runnable {
         for (Player player : playersWithHide){
 
             List<Player> distantPlayers = new ArrayList<>(onlinePlayers);
-            List<Entity> nearbyEntities = new ArrayList<>(player.getNearbyEntities(2.5, 2.5, 2.5));
+            List<Entity> nearbyEntities = new ArrayList<>(player.getNearbyEntities(this.plugin.hideDistance, this.plugin.hideDistance, this.plugin.hideDistance));
 
             for (Entity nearbyEntity : nearbyEntities) {
 
@@ -37,7 +37,7 @@ public final class HidesPlayers implements Runnable {
     public static void showInvisible(List<Player> playersToShow, Player player){
         for (Player playerToShow : playersToShow){
             if (!player.canSee(playerToShow)) {
-                player.showPlayer(HideNearbyPlugin.plugin, playerToShow);
+                player.showPlayer(HideNearbyPlugin.getPlugin(), playerToShow);
             }
         }
     }
