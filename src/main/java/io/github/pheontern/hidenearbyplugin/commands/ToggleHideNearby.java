@@ -22,21 +22,25 @@ public class ToggleHideNearby implements CommandExecutor {
 
         if (sender instanceof Player player) {
 
-            int playerIndex = this.plugin.playersWithHide.indexOf(player);
-
-            if (playerIndex == -1) {
-                this.plugin.playersWithHide.add(player);
-                player.sendMessage(Component.text("Players closer than " + this.plugin.hideDistance + " blocks are now hidden.").color(TextColor.fromHexString("#78f562")));
+            if (this.plugin.playersWithHide.contains(player)) {
+                disableHide(player);
             }
             else {
-                this.plugin.playersWithHide.remove(playerIndex);
-                HidesPlayers.showInvisible(new ArrayList<>(this.plugin.getServer().getOnlinePlayers()), player);
-                player.sendMessage(Component.text("Nearby players are no longer hidden.").color(TextColor.fromHexString("#e8574f")));
+                enableHide(player);
             }
-
         }
-
         return true;
+    }
+
+    private void enableHide(Player player){
+        this.plugin.playersWithHide.add(player);
+        player.sendMessage(Component.text("Players within " + this.plugin.loadPlayerHideDistance(player) + " blocks are now hidden.").color(TextColor.fromHexString("#78f562")));
+    }
+
+    private void disableHide(Player player){
+        this.plugin.playersWithHide.remove(player);
+        HidesPlayers.showInvisible(new ArrayList<>(this.plugin.getServer().getOnlinePlayers()), player);
+        player.sendMessage(Component.text("Nearby players are no longer hidden.").color(TextColor.fromHexString("#e8574f")));
     }
 
 }

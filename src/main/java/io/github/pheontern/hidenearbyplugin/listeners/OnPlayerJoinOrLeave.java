@@ -16,7 +16,7 @@ public class OnPlayerJoinOrLeave implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-
+        this.plugin.loadPlayerHideDistance(event.getPlayer());
     }
 
     //Deactivates hide for players that log out.

@@ -10,5 +10,5 @@ commands:
     description: Hides nearby players.
     usage: /<command>
   hideDistance:
-    description: If player is op, changes the distance below which players are hidden.
+    description: Changes the distance below which players are hidden for the player that executed the command.
     usage: /<command> decimalValue

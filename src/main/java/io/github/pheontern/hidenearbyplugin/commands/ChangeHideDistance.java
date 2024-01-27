@@ -19,17 +19,12 @@ public class ChangeHideDistance implements CommandExecutor {
 
         if (sender instanceof Player player) {
 
-            if (player.isOp()) {
-                try {
-                    double input = Double.parseDouble(args[0]);
-                    this.plugin.hideDistance = input;
-                    player.sendMessage(Component.text("Changed hide distance to " + input + " blocks.").color(TextColor.fromHexString("#78f562")));
-                } catch (Exception e) {
-                    player.sendMessage(Component.text("Please specify a distance. (E.g. 5, 2.5, 1)").color(TextColor.fromHexString("#e8574f")));
-                }
-            }
-            else{
-                player.sendMessage(Component.text("Permission denied.").color(TextColor.fromHexString("#e8574f")));
+            try {
+                double input = Double.parseDouble(args[0]);
+                this.plugin.hideDistances.put(player.getUniqueId().toString(), input);
+                player.sendMessage(Component.text("Changed your hide distance to " + input + " blocks.").color(TextColor.fromHexString("#78f562")));
+            } catch (Exception e) {
+                player.sendMessage(Component.text("Please specify a distance. (E.g. 5, 2.5, 1)").color(TextColor.fromHexString("#e8574f")));
             }
 
         }

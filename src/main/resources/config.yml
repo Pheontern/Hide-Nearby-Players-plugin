@@ -1,0 +1,3 @@
+default-hide-distance: 2.5
+#List of all distances saved for each player-uuid.
+hide-distances:
