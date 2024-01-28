@@ -1,7 +1,6 @@
 package io.github.pheontern.hidenearbyplugin;
 
-import io.github.pheontern.hidenearbyplugin.commands.ChangeHideDistance;
-import io.github.pheontern.hidenearbyplugin.commands.ToggleHideNearby;
+import io.github.pheontern.hidenearbyplugin.commands.*;
 import io.github.pheontern.hidenearbyplugin.listeners.OnPlayerJoinOrLeave;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,7 +16,10 @@ public final class HideNearbyPlugin extends JavaPlugin{
 
     private static HideNearbyPlugin plugin;
     private FileConfiguration config;
-    private double defaultHideDistance;
+    private Logger logger;
+    public double standardHideDistance = 2.5;
+    public double verticalHideDistance = 2;
+    public int tickDelay = 3;
 
     public static HideNearbyPlugin getPlugin(){
         return plugin;
@@ -26,9 +28,8 @@ public final class HideNearbyPlugin extends JavaPlugin{
     //List with all players that have hide activated.
     public final List<Player> playersWithHide = new ArrayList<>();
 
-    //List of chosen distances for each player, loaded from config file.
+    //Hashmap of chosen distances for each player, loaded from config file. UUID:s are keys.
     public final Map<String, Double> hideDistances = new HashMap<>();
-
 
 
     //Initializes necessary objects when plugin is loaded. Starts scheduler to check distance between players and hide them.
@@ -36,8 +37,7 @@ public final class HideNearbyPlugin extends JavaPlugin{
     public void onEnable() {
         plugin = this;
         config = this.getConfig();
-
-        Logger logger = this.getLogger();
+        logger = this.getLogger();
 
         loadConfig();
         registerEvents();
@@ -50,7 +50,9 @@ public final class HideNearbyPlugin extends JavaPlugin{
     private void loadConfig(){
         config.options().copyDefaults(true);
         this.saveDefaultConfig();
-        defaultHideDistance = config.getDouble("default-hide-distance", 2.5);
+        standardHideDistance = config.getDouble("standard-hide-distance", 2.5);
+        tickDelay = config.getInt("tick-delay", 3);
+        verticalHideDistance = config.getDouble("vertical-distance", 2);
     }
 
     //If no distance is stored in the hashmap, loads it from the file. Returns the resulting distance.
@@ -60,10 +62,10 @@ public final class HideNearbyPlugin extends JavaPlugin{
         if (!hideDistances.containsKey(uuid)) {
             ConfigurationSection hideSection = config.getConfigurationSection("hide-distances");
             if (hideSection != null) {
-                distance = hideSection.getDouble(uuid, defaultHideDistance);
+                distance = hideSection.getDouble(uuid, standardHideDistance);
             }
             else{
-                distance = defaultHideDistance;
+                distance = standardHideDistance;
             }
             hideDistances.put(uuid, distance);
         }
@@ -75,7 +77,7 @@ public final class HideNearbyPlugin extends JavaPlugin{
 
     private void runScheduler(){
         BukkitScheduler scheduler = this.getServer().getScheduler();
-        scheduler.runTaskTimer(this, new HidesPlayers(), 20, 3);
+        scheduler.runTaskTimer(this, new HidesPlayers(), 20, tickDelay);
     }
 
     private void registerEvents(){
@@ -85,20 +87,29 @@ public final class HideNearbyPlugin extends JavaPlugin{
     private void registerCommands(){
         this.getCommand("toggleHide").setExecutor(new ToggleHideNearby());
         this.getCommand("hideDistance").setExecutor(new ChangeHideDistance());
+        this.getCommand("hideTickDelay").setExecutor(new HideTickDelay());
+        this.getCommand("hideVerticalDistance").setExecutor(new HideVerticalDistance());
+        this.getCommand("hideStandardDistance").setExecutor(new HideStandardDistance());
     }
 
     private void saveDataToConfig(){
         for (String uuid : hideDistances.keySet()){
             double distance = hideDistances.get(uuid);
-            if (distance != defaultHideDistance){
+            if (distance != standardHideDistance){
                 config.set(String.format("hide-distances.%s", uuid), distance);
             }
         }
+
+        config.set("tick-delay", tickDelay);
+        config.set("standard-hide-distance", standardHideDistance);
+        config.set("vertical-distance", verticalHideDistance);
+
+        this.saveConfig();
     }
 
     @Override
     public void onDisable() {
         saveDataToConfig();
-        this.saveConfig();
+        logger.info("Player configurations have been saved.");
     }
 }

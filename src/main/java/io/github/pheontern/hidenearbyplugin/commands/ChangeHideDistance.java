@@ -21,21 +21,20 @@ public class ChangeHideDistance implements CommandExecutor {
 
             try {
                 double input = Double.parseDouble(args[0]);
-                if (input > 0 && input < 8) {
+                if (input > 0 && input <= 8) {
                     this.plugin.hideDistances.put(player.getUniqueId().toString(), input);
                     player.sendMessage(Component.text("Changed your hide distance to " + input + " blocks.").color(TextColor.fromHexString("#78f562")));
+                    return true;
                 }
-                else {
-                    player.sendMessage(Component.text("Only distances between 0 and 8 are allowed.").color(TextColor.fromHexString("#e8574f")));
+                else if (input == 0){
+                    this.plugin.hideDistances.put(player.getUniqueId().toString(), input);
+                    player.sendMessage(Component.text("Players will only be hidden when you are inside of them.").color(TextColor.fromHexString("#f6fc49")));
+                    return true;
                 }
-            } catch (Exception e) {
-                player.sendMessage(Component.text("Please specify a distance. (E.g. 5, 2.5, 1)").color(TextColor.fromHexString("#e8574f")));
             }
-
+            catch (Exception ignored) {}
+            player.sendMessage(Component.text("Enter a decimal number between 0 and 8. (E.g. 5, 2.5, 1)").color(TextColor.fromHexString("#e8574f")));
         }
-
         return true;
-
     }
-
 }

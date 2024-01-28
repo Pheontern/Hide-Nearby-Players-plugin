@@ -12,3 +12,12 @@ commands:
   hideDistance:
     description: Changes the distance below which players are hidden for the player that executed the command.
     usage: /<command> decimalValue
+  hideStandardDistance:
+    description: Changes the standard hide distance that is used when a player hasn't specified their own.
+    usage: /<command> decimalValue
+  hideVerticalDistance:
+    description: Changes the vertical hide distance. This is the same for every player.
+    usage: /<command> decimalValue
+  hideTickDelay:
+    description: Changes the tick-delay between each check for distance between players. Only updated at restart.
+    usage: /<command> integerValue

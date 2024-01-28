@@ -1,3 +1,8 @@
-default-hide-distance: 2.5
+#Number of server ticks between each check for distance between players.
+tick-delay: 3
+#This is used when a player hasn't specified a distance.
+standard-hide-distance: 2.5
+#This is the vertical hide-distance and is the same for all players.
+vertical-distance: 2
 #List of all distances saved for each player-uuid.
 hide-distances:

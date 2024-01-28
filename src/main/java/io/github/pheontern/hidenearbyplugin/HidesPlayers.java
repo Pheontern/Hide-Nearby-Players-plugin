@@ -20,7 +20,7 @@ public final class HidesPlayers implements Runnable {
             List<Player> distantPlayers = new ArrayList<>(onlinePlayers);
 
             double distance = this.plugin.loadPlayerHideDistance(player);
-            List<Entity> nearbyEntities = new ArrayList<>(player.getNearbyEntities(distance, 2, distance));
+            List<Entity> nearbyEntities = new ArrayList<>(player.getNearbyEntities(distance, this.plugin.verticalHideDistance, distance));
 
             for (Entity nearbyEntity : nearbyEntities) {
 
