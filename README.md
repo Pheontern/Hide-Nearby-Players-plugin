@@ -1,5 +1,5 @@
 # Hide Nearby Players plugin
-Minecraft plugin for 1.20.x that automatically hides players from each other when they are closer than a set distance.  
+Minecraft plugin (paper/spigot/bukkit) for 1.20.x that automatically hides players from each other when they are closer than a set distance.  
 Mainly useful for parkour races when you want to be able to see other players at a distance without them blocking your view.
 
 config.yml contains default-hide-distance which is the distance that is set before a player customizes it.  
