@@ -6,6 +6,8 @@ config.yml contains default-hide-distance which is the distance that is set befo
 Customized values are stored under the hide-distances-section attached to player uuid:s.  
 Data is saved when the server is shutdown with the stop-command, or the plugin is disabled.
 
+At the moment, this plugin is designed to work with servers without any permissions-system outside of vanilla op-players.
+
 ### Commands
 #### /togglehide:  
 Toggles the hide feature for the player that runs the command, available to all players on the server. (disables when leaving server)  
