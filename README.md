@@ -15,6 +15,8 @@ Changes the distance at which players are hidden, stored in config.yml-file.
 Every player can change their personal distance.
 Can be any decimal value between 0 and 8.
 
+### Commands (only OP-players)
+
 #### /hideVerticalDistance decimalValue:
 Changes the vertical hide distance. This is the same for every player.  
 
